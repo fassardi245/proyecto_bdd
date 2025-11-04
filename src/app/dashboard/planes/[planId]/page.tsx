@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 export default async function SociosDelPlan({ params }: { params: { planId: string } }) {
   const planId = Number(params.planId);
 
-  // Obtenemos el plan actual (para mostrar su nombre)
   const plan = await prisma.plan.findUnique({
     where: { id: planId },
     select: { tipo: true },
@@ -16,7 +15,6 @@ export default async function SociosDelPlan({ params }: { params: { planId: stri
     orderBy: { apellido: "asc" },
   });
 
-  // Calcular deuda y color de fila
   const filas = socios.map((s) => {
     const deudaTotal = s.pagos
       .filter((p) => p.estado === "vencido")
@@ -24,10 +22,10 @@ export default async function SociosDelPlan({ params }: { params: { planId: stri
 
     let tipo = "Al día";
     let color = "bg-green-400";
-    if (deudaTotal > 0 && deudaTotal < 30000) {
+    if (deudaTotal > 0 && deudaTotal <= 20000) {
       tipo = "Deuda leve";
       color = "bg-yellow-300";
-    } else if (deudaTotal >= 30000) {
+    } else if (deudaTotal > 20000) {
       tipo = "Deuda grave";
       color = "bg-red-500 text-white";
     }
@@ -43,11 +41,47 @@ export default async function SociosDelPlan({ params }: { params: { planId: stri
 
   return (
     <main className="flex flex-col items-center justify-start min-h-[85vh] px-6 pt-20 pb-10 bg-white">
-      {/* TÍTULO CON EL NOMBRE DEL PLAN */}
-      <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-tight mb-14 text-center">
+
+      {/* TÍTULO */}
+      <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-tight mb-6 text-center">
         Socios y sus deudas del plan{" "}
         <span className="text-black-500">{plan?.tipo ?? "no encontrado"}</span>
       </h1>
+
+      {/* 🔸 LEYENDA DE COLORES */}
+<div className="mt-8 mb-12 text-center">
+  <div className="inline-block bg-white border border-gray-100 rounded-2xl shadow-sm px-8 py-4">
+    <h2 className="text-[17px] md:text-lg font-semibold text-gray-800 mb-4 tracking-tight">
+      Explicacion de cada color de la semaforización
+    </h2>
+
+    <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-[15px] text-gray-600 font-medium">
+      <div className="flex items-center gap-2">
+        <span className="w-3.5 h-3.5 rounded-full bg-red-400 border border-red-300 shadow-sm"></span>
+        <span>
+          <strong className="text-red-500">Rojo</strong>: deuda superior a <span className="font-semibold">$20.000</span>
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <span className="w-3.5 h-3.5 rounded-full bg-amber-300 border border-amber-200 shadow-sm"></span>
+        <span>
+          <strong className="text-amber-500">Amarillo</strong>: deuda igual o menor a <span className="font-semibold">$20.000</span>
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <span className="w-3.5 h-3.5 rounded-full bg-emerald-300 border border-emerald-200 shadow-sm"></span>
+        <span>
+          <strong className="text-emerald-500">Verde</strong>: sin deudas <em>(al día)</em>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
       {/* TABLA */}
       <div className="rounded-xl overflow-hidden shadow-xl w-full max-w-4xl border border-gray-200">
