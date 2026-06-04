@@ -8,7 +8,7 @@ export default function HomePage() {
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn");
     if (loggedIn === "true") {
-      router.push("/dashboard"); // ya logueado → ir directo al dashboard
+      router.push("/dashboard"); 
     }
   }, []);
 

@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/prisma'
 
 export default async function RutinasPage() {
-  // Traer todas las rutinas con cantidad de socios
   const rutinas = await prisma.rutina.findMany({
     include: { _count: { select: { socios: true } } },
     orderBy: { nombre: 'asc' },
@@ -14,7 +13,6 @@ export default async function RutinasPage() {
       </h1>
 
       <div className="rounded-xl overflow-hidden shadow-lg w-full max-w-5xl border border-gray-200">
-        {/* Encabezado */}
         <div className="grid grid-cols-5 bg-gradient-to-r from-orange-400 to-orange-500 font-semibold text-black p-3 text-center text-lg">
           <div>Nombre</div>
           <div>Nivel</div>
@@ -23,7 +21,7 @@ export default async function RutinasPage() {
           <div>Socios asignados</div>
         </div>
 
-        {/* Filas */}
+   
         {rutinas.length > 0 ? (
           rutinas.map((r, i) => (
             <div

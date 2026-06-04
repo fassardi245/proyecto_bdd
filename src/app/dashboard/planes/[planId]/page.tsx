@@ -42,13 +42,11 @@ export default async function SociosDelPlan({ params }: { params: { planId: stri
   return (
     <main className="flex flex-col items-center justify-start min-h-[85vh] px-6 pt-20 pb-10 bg-white">
 
-      {/* TÍTULO */}
       <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-tight mb-6 text-center">
         Socios y sus deudas del plan{" "}
         <span className="text-black-500">{plan?.tipo ?? "no encontrado"}</span>
       </h1>
 
-      {/* 🔸 LEYENDA DE COLORES */}
 <div className="mt-8 mb-12 text-center">
   <div className="inline-block bg-white border border-gray-100 rounded-2xl shadow-sm px-8 py-4">
     <h2 className="text-[17px] md:text-lg font-semibold text-gray-800 mb-4 tracking-tight">
@@ -79,11 +77,6 @@ export default async function SociosDelPlan({ params }: { params: { planId: stri
     </div>
   </div>
 </div>
-
-
-
-
-      {/* TABLA */}
       <div className="rounded-xl overflow-hidden shadow-xl w-full max-w-4xl border border-gray-200">
         <div className="grid grid-cols-3 bg-gradient-to-r from-orange-400 to-orange-500 font-semibold text-black p-4 text-center text-lg">
           <div>Nombre</div>
@@ -110,7 +103,6 @@ export default async function SociosDelPlan({ params }: { params: { planId: stri
         )}
       </div>
 
-      {/* BOTÓN VOLVER */}
       <Link
         href="/dashboard/planes"
         className="mt-10 bg-black hover:bg-neutral-800 text-white px-6 py-2.5 rounded-md font-semibold text-sm shadow-md transition-all"

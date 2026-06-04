@@ -6,12 +6,10 @@ function pct(value: number, total: number) {
 }
 
 export default async function DashboardPage() {
-  // 🔹 Total socios: todos (activos + inactivos)
-  // 🔹 Socios con plan: solo los activos con plan
   const [totalSocios, sociosConPlan, pagosPagados, pagosPendientes, pagosVencidos] =
     await Promise.all([
-      prisma.socio.count(), // total general (13)
-      prisma.socio.count({ where: { planId: { not: null }, estado: 'activo' } }), // solo activos con plan
+      prisma.socio.count(), 
+      prisma.socio.count({ where: { planId: { not: null }, estado: 'activo' } }), 
       prisma.pago.count({ where: { estado: 'pagado' } }),
       prisma.pago.count({ where: { estado: 'pendiente' } }),
       prisma.pago.count({ where: { estado: 'vencido' } }),
@@ -19,7 +17,6 @@ export default async function DashboardPage() {
 
   const totalPagos = pagosPagados + pagosPendientes + pagosVencidos
 
-  // 🔹 Agrupar pagos por socio para saber quién debe
   const pagosPorSocio = await prisma.pago.groupBy({
     by: ['socioId', 'estado'],
     _count: { _all: true },
@@ -32,7 +29,6 @@ export default async function DashboardPage() {
     }
   })
 
-  // 🔹 Analizamos todos los socios (activos + inactivos)
   const todosLosSocios = await prisma.socio.findMany({
     select: { id: true },
   })
@@ -46,7 +42,6 @@ export default async function DashboardPage() {
     else alDia++
   })
 
-  // 🔹 Tarjetas de KPI
   const cards = [
     { title: 'Socios con Plan', value: `${sociosConPlan} de ${totalSocios}`, percent: pct(sociosConPlan, totalSocios) },
     { title: 'Pagos realizados', value: `${pagosPagados} de ${totalPagos}`, percent: pct(pagosPagados, totalPagos) },
@@ -60,7 +55,6 @@ export default async function DashboardPage() {
         Inicio
       </h1>
 
-      {/* GRID 2x2 centrada */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
         {cards.map((c, i) => (
           <CardKPI key={i} title={c.title} value={c.value} percent={c.percent} />
@@ -73,15 +67,12 @@ export default async function DashboardPage() {
 function CardKPI({ title, value, percent }: { title: string; value: string; percent: number }) {
   return (
     <div className="rounded-xl bg-gradient-to-r from-orange-400 to-orange-500 p-6 shadow-[0_6px_18px_rgba(0,0,0,0.12)] hover:scale-[1.02] transition-transform duration-300">
-      {/* Título */}
       <h2 className="text-2xl md:text-3xl font-extrabold text-black mb-3 tracking-tight">
         {title}
       </h2>
 
-      {/* Valor */}
       <div className="text-2xl font-semibold text-white mb-4">{value}</div>
 
-      {/* Barra de progreso */}
       <div className="w-full h-3 rounded-full bg-white/80 relative overflow-hidden">
         <div
           className="absolute left-0 top-0 h-full bg-black transition-all duration-700"

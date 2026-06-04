@@ -1,14 +1,12 @@
 import { prisma } from '@/lib/prisma'
 
 export default async function PagosPage() {
-  // Traer todos los pagos realizados (estado = 'pagado')
   const pagos = await prisma.pago.findMany({
     where: { estado: 'pagado' },
     include: { socio: { include: { plan: true } } },
     orderBy: { fechaReal: 'desc' },
   })
 
-  // Formato de fecha
   const formatDate = (date: Date | null) =>
     date ? new Intl.DateTimeFormat('es-AR').format(new Date(date)) : '—'
 
@@ -28,7 +26,6 @@ export default async function PagosPage() {
           <div>Monto</div>
         </div>
 
-        {/* Filas */}
         {pagos.length > 0 ? (
           pagos.map((p, i) => (
             <div
@@ -37,27 +34,22 @@ export default async function PagosPage() {
                 i % 2 === 0 ? 'bg-orange-50' : 'bg-orange-100'
               } hover:bg-orange-200/70 border-b border-gray-300`}
             >
-              {/* Nombre */}
               <div className="font-semibold text-neutral-800">
                 {p.socio ? `${p.socio.nombre} ${p.socio.apellido}` : '—'}
               </div>
 
-              {/* Plan */}
               <div className="capitalize text-neutral-700">
                 {p.socio?.plan?.tipo.toLowerCase() ?? '—'}
               </div>
 
-              {/* Fecha (solo una columna) */}
               <div className="text-neutral-700">
                 {formatDate(p.fechaReal)}
               </div>
 
-              {/* Método */}
               <div className="capitalize text-neutral-700">
                 {p.metodo ?? '—'}
               </div>
 
-              {/* Monto */}
               <div className="font-semibold text-neutral-800">
                 ${p.monto.toLocaleString('es-AR')}
               </div>

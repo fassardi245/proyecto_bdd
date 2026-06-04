@@ -38,15 +38,15 @@ export default function DashboardLayout({ children }: Props) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* BARRA SUPERIOR */}
+      
       <header className="w-full shadow-sm">
         <div className="flex w-full h-16">
-          {/* LEFT: logo y nav */}
+         
           <div className="flex items-stretch bg-black">
-            {/* Logo (clickeable) */}
+           
             <div
               className="flex items-center justify-center w-24 select-none cursor-pointer"
-              onClick={() => router.push("/dashboard")} // 👈 al hacer clic, navega al inicio del panel
+              onClick={() => router.push("/dashboard")} 
             >
               <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white font-bold transition-transform hover:scale-105">
                 GYM
@@ -54,7 +54,6 @@ export default function DashboardLayout({ children }: Props) {
             </div>
 
 
-            {/* Botones de navegación */}
             <nav className="flex items-stretch">
               {navItems.map((item) => (
                 <div
@@ -74,13 +73,11 @@ export default function DashboardLayout({ children }: Props) {
             </nav>
           </div>
 
-          {/* CENTER: franja naranja */}
           <div
             className="flex-1 bg-gradient-to-r from-orange-500 to-orange-400"
             title="Panel central"
           />
 
-          {/* RIGHT: Logout */}
           <div className="flex items-stretch bg-black">
             <div
               onClick={() => {
@@ -97,7 +94,6 @@ export default function DashboardLayout({ children }: Props) {
         </div>
       </header>
 
-      {/* CONTENIDO */}
       <main>{children}</main>
     </div>
   );

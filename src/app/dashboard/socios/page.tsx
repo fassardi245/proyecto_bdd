@@ -25,7 +25,6 @@ export default async function SociosPage() {
           <div>Fecha de Alta</div>
         </div>
 
-        {/* Filas */}
         {socios.length > 0 ? (
           socios.map((s, i) => (
             <div

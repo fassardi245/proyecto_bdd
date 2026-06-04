@@ -39,10 +39,8 @@ export default function LoginPage() {
         return
       }
 
-      // ✅ Guardar sesión en localStorage
       localStorage.setItem("isLoggedIn", "true")
 
-      // ✅ Redirigir al dashboard
       router.push("/dashboard")
     } catch (err) {
       console.error("Error fetch:", err)

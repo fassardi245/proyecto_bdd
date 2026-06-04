@@ -9,7 +9,6 @@ export default async function PagosDelSocio({
   const socioId = Number(params.socioId);
   const planId = Number(params.planId);
 
-  // Buscar socio y sus pagos
   const socio = await prisma.socio.findUnique({
     where: { id: socioId },
     include: { pagos: { orderBy: { fechaEsperada: "asc" } } },
@@ -29,7 +28,6 @@ export default async function PagosDelSocio({
     );
   }
 
-  // Calcular total adeudado (pagos vencidos)
   const totalAdeudado = socio.pagos
     .filter((p) => p.estado === "vencido")
     .reduce((acc, p) => acc + p.monto, 0);
@@ -51,12 +49,10 @@ export default async function PagosDelSocio({
 
   return (
     <main className="flex flex-col items-center justify-start min-h-[85vh] px-6 pt-20 pb-10 bg-white">
-      {/* TÍTULO */}
       <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-tight mb-12 text-center">
         Pagos de {socio.nombre} {socio.apellido}
       </h1>
 
-      {/* TABLA DE PAGOS */}
       <div className="rounded-xl overflow-hidden shadow-xl w-full max-w-4xl border border-gray-200">
         <div className="grid grid-cols-5 bg-gradient-to-r from-orange-400 to-orange-500 font-semibold text-black p-4 text-center text-lg">
           <div>Fecha esperada</div>
@@ -91,7 +87,6 @@ export default async function PagosDelSocio({
         )}
       </div>
 
-      {/* PIE: BOTÓN Y TOTAL */}
       <div className="flex justify-between items-center w-full max-w-4xl mt-8">
         <Link
           href={`/dashboard/planes/${planId}`}

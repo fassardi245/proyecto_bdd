@@ -9,7 +9,7 @@ export default async function PlanesPage() {
 
   return (
     <main className="flex flex-col items-center justify-start min-h-[85vh] px-6 pt-20 pb-10 bg-white">
-      {/* título centrado entre navbar y tarjetas */}
+      
       <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-tight mb-16 text-center">
         Tipos de planes
       </h1>
